@@ -7,12 +7,7 @@ public class MainClass {
         System.out.println("aaa");
         System.out.println("ddd");
 	}
-	
-	
-	
-	
-	
-	
+
 	
 
 }
