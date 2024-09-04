@@ -1,10 +1,12 @@
 package com.sist.web;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -115,6 +117,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sist.dao.DataBoardDAO;
 import com.sist.vo.BoardVO;
 import com.sist.vo.DataBoardVO;
+import java.net.*;
 @Controller
 @RequestMapping("databoard/") // 공통으로 사용되는 URL주소를 모아서 => 적용
 public class DataBoardController {
@@ -213,6 +216,37 @@ public class DataBoardController {
 	   return "databoard/detail";
    }
    // 다운로드 
+   @GetMapping("download.do")
+   public void databoard_download(String fn,HttpServletResponse response)
+   {
+	   try
+	   {
+		   String path="c:\\spring_upload";
+		   // 서버에서 파일을 읽어서 한개의 메모리에 저장 => 속도를 빠르게 
+		   BufferedInputStream bis=
+				   new BufferedInputStream(new FileInputStream(path+"\\"+fn));
+		   // 다운로드 요청한 클라이언트 
+		   BufferedOutputStream bos=
+				   new BufferedOutputStream(response.getOutputStream());
+		   
+		   // 1.다운로드창을 보여준다 
+		   response.setHeader("Content-Disposition", "attachment;filename="
+				     +URLEncoder.encode(fn,"UTF-8"));
+		   File file=new File(path+"\\"+fn);
+		   response.setContentLength((int)file.length());// 프로그래스바
+		   
+		   // 실제 다운로드 
+		   byte[] buffer=new byte[1024]; // TCP:1024 , UDP : 512
+		   int i=0; // 파일에서 읽은 파이트 크기 
+		   while((i=bis.read(buffer, 0, 1024))!=-1)
+		   {
+			   // -1 : EOF
+			   bos.write(buffer, 0, i);
+		   }
+		   bis.close();
+		   bos.close();
+	   }catch(Exception ex){}
+   }
 }
 
 
