@@ -42,7 +42,7 @@ $(function(){
    <div class="container">
      <h3 class="text-center">글쓰기</h3>
      <div class="row">
-     <form method="post" action="insert_ok.do">
+     <form method="post" action="insert_ok.do" enctype="multipart/form-data">
       <table class="table">
         <tr>
          <th class="text-right" width=20%>이름</th>
