@@ -58,7 +58,7 @@
         <tr>
           <td colspan="4" class="text-right">
            <a href="#" class="btn btn-xs btn-danger">수정</a>
-           <a href="#" class="btn btn-xs btn-success">삭제</a>
+           <a href="delete.do?no=${vo.no }" class="btn btn-xs btn-success">삭제</a>
            <a href="list.do" class="btn btn-xs btn-primary">목록</a>
           </td>
         </tr>

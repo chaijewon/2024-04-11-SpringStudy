@@ -1,6 +1,7 @@
 package com.sist.mapper;
 import java.util.*;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -37,4 +38,18 @@ public interface DataBoardMapper {
 			 +"FROM spring_databoard "
 			 +"WHERE no=#{no}")
 	  public DataBoardVO databoardDetailData(int no);
+	  
+	  // 삭제하기 => 비교 (암호화 = 실제 데이터) => match
+	  @Select("SELECT filename,filecount FROM spring_databoard "
+			 +"WHERE no=#{no}")
+	  public DataBoardVO  databoardFileInfoData(int no);
+	  
+	  @Select("SELECT pwd FROM spring_databoard "
+			 +"WHERE no=#{no}")
+	  public String databoardGetPassword(int no);
+	  
+	  @Delete("DELETE FROM spring_databoard "
+			 +"WHERE no=#{no}")
+	  public void databoardDelete(int no);
+	  
 }

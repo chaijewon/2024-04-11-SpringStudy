@@ -203,22 +203,27 @@ public class DataBoardController {
    public String databoard_detail(int no,Model model)
    {
 	   DataBoardVO vo=dao.databoardDetailData(no);
-	   List<String> nList=new ArrayList<String>();
-	   List<String> cList=new ArrayList<String>();
-	   String[] names=vo.getFilename().split(",");
-	   String[] lens=vo.getFilesize().split(",");
-	   nList=Arrays.asList(names);
-	   cList=Arrays.asList(lens);
-	   // 배열 => List로 변경 
+	   if(vo.getFilecount()!=0)
+	   {
+		   List<String> nList=new ArrayList<String>();
+		   List<String> cList=new ArrayList<String>();
+		   String[] names=vo.getFilename().split(",");
+		   String[] lens=vo.getFilesize().split(",");
+		   nList=Arrays.asList(names);
+		   cList=Arrays.asList(lens);
+		   // 배열 => List로 변경 
+		   
+		   model.addAttribute("nList", nList);
+		   model.addAttribute("cList", cList); // a.jpg(1000byte)
+	   }
 	   model.addAttribute("vo", vo);
-	   model.addAttribute("nList", nList);
-	   model.addAttribute("cList", cList); // a.jpg(1000byte)
 	   return "databoard/detail";
    }
-   // 다운로드 
+   // 다운로드 MVC
    @GetMapping("download.do")
    public void databoard_download(String fn,HttpServletResponse response)
    {
+	   // => VueJS
 	   try
 	   {
 		   String path="c:\\spring_upload";
@@ -246,6 +251,35 @@ public class DataBoardController {
 		   bis.close();
 		   bos.close();
 	   }catch(Exception ex){}
+   }
+   
+   @GetMapping("delete.do")
+   public String databoard_delete(int no,Model model)
+   {
+	   model.addAttribute("no", no);
+	   return "databoard/delete";
+   }
+   
+   @PostMapping("delete_ok.do")
+   public String databoard_delete_ok(int no,String pwd,Model model)
+   {
+	   DataBoardVO vo=dao.databoardFileInfoData(no);
+	   boolean bCheck=dao.databoardDelete(no, pwd);
+	   model.addAttribute("bCheck", bCheck);   
+	   try
+	   {
+		   String files=vo.getFilename();
+		   if(vo.getFilecount()!=0) // 파일이 있는 경우 
+		   {
+			   StringTokenizer st=new StringTokenizer(files,",");
+			   while(st.hasMoreTokens())
+			   {
+				   File file=new File("c:\\spring_upload\\"+st.nextToken());
+				   file.delete();
+			   }
+		   }
+	   }catch(Exception ex) {}
+	   return "databoard/delete_ok";
    }
 }
 
