@@ -15,4 +15,5 @@ public interface RecipeService {
 	public int chefTotalPage();
 	public List<RecipeVO> chefMakeRecipeData(Map map);
 	public int chefMakeRecipeTotalPage(String chef);
+	public RecipeVO recipeCookieInfoData(int no);
 }

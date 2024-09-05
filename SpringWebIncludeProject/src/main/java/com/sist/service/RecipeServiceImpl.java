@@ -55,4 +55,10 @@ public class RecipeServiceImpl implements RecipeService{
 		// TODO Auto-generated method stub
 		return dao.chefMakeRecipeTotalPage(chef);
 	}
+
+	@Override
+	public RecipeVO recipeCookieInfoData(int no) {
+		// TODO Auto-generated method stub
+		return dao.recipeCookieInfoData(no);
+	}
 }

@@ -74,9 +74,7 @@
        <td class="text-right">
          <input type=button class="btn-sm btn-warning" value="좋아요">
          <input type=button class="btn-sm btn-success" value="찜하기">
-         <input type=button class="btn-sm btn-info" value="목록"
-           onclick="javascript:history.go(-1)"
-         >
+         <a href="../main/main.do" class="btn-sm btn-info">목록</a>
        </td>
       </tr>
     </table>

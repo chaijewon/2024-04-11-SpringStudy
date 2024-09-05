@@ -24,7 +24,7 @@
     <c:forEach var="vo" items="${list }">
       <div class="col-md-3">
 		    <div class="thumbnail">
-		      <a href="../recipe/detail.do?no=${vo.no }">
+		      <a href="../recipe/detail_before.do?no=${vo.no }">
 		        <img src="${vo.poster }" title="${vo.title}" style="width:230px;height: 150px">
 		        <div class="caption">
 		          <p>${vo.chef }</p>
@@ -51,6 +51,24 @@
         </c:if>
        </ul>
      </div>
+   </div>
+   <h3>방문한 레시피</h3>
+   <a href="../recipe/cookie_all.do" class="btn btn-xs btn-primary">더보기</a>
+   <hr>
+   <div class="row">
+    <c:if test="${size==0 }">
+      <h3 class="text-center">방문한 레시피가 없습니다</h3>
+    </c:if>
+    <c:if test="${size>0 }">
+      <c:forEach var="vo" items="${cList }" varStatus="s">
+         <c:if test="${s.index<9 }">
+          <a href="../recipe/detail.do?no=${vo.no }">
+           <img src="${vo.poster}" style="width: 100px;height: 100px"
+             title="${vo.title }">
+          </a>
+         </c:if>
+      </c:forEach>
+    </c:if>
    </div>
 </body>
 </html>

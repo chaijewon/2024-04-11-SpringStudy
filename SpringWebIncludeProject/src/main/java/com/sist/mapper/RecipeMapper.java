@@ -60,4 +60,10 @@ public interface RecipeMapper {
 			  +"WHERE chef=#{chef}")
 	   public int chefMakeRecipeTotalPage(String chef);
 	   // 레시피 찾기 
+	   
+	   // 쿠키 정보 데이터 
+	   @Select("SELECT no,title,poster "
+			  +"FROM recipe "
+			  +"WHERE no=#{no}")
+	   public RecipeVO recipeCookieInfoData(int no);
 }

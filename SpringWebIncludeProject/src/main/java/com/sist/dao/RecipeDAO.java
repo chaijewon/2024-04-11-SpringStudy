@@ -47,6 +47,7 @@ public class RecipeDAO {
     	mapper.recipeHitIncrement(no);
     	return mapper.recipeDetailData(no);
     }
+    
     // 쉐프 관련
     /*
      *   @Select("SELECT chef,poster,mem_cont1,mem_cont3,mem_cont7,mem_cont2,num "
@@ -88,5 +89,17 @@ public class RecipeDAO {
     public int chefMakeRecipeTotalPage(String chef)
     {
     	return mapper.chefMakeRecipeTotalPage(chef);
+    }
+    
+    /*
+     *     쿠키에 출력할 데이터
+     *     @Select("SELECT no,title,poster "
+			  +"FROM recipe "
+			  +"WHERE no=#{no}")
+	       public RecipeVO recipeCookieInfoData(int no);
+     */
+    public RecipeVO recipeCookieInfoData(int no)
+    {
+    	return mapper.recipeCookieInfoData(no);
     }
 }
