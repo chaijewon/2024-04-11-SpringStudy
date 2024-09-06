@@ -82,4 +82,16 @@ public class RecipeServiceImpl implements RecipeService{
 		// TODO Auto-generated method stub
 		return dao.recipeFindTotalPage(map);
 	}
+
+	@Override
+	public List<FoodVO> foodTop5Data() {
+		// TODO Auto-generated method stub
+		return dao.foodTop5Data();
+	}
+
+	@Override
+	public List<RecipeVO> recipeTop5Data() {
+		// TODO Auto-generated method stub
+		return dao.recipeTop5Data();
+	}
 }

@@ -79,4 +79,16 @@ public interface RecipeMapper {
 			  +"FROM recipe "
 			  +"WHERE no=#{no}")
 	   public RecipeVO recipeCookieInfoData(int no);
+	   
+	   // 1. 인기 맛집 
+	   @Select("SELECT fno,name,rownum "
+			  +"FROM (SELECT fno,name FROM project_food_house ORDER BY hit DESC) "
+			  +"WHERE rownum<=5")
+	   public List<FoodVO> foodTop5Data();
+	   // 2. 인기 레시피 
+	   @Select("SELECT no,title,rownum "
+			  +"FROM (SELECT no,title FROM recipe ORDER BY hit DESC) "
+			  +"WHERE rownum<=5")
+	   public List<RecipeVO> recipeTop5Data();
+	   // 3. 인기 게시물 
 }
