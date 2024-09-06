@@ -102,4 +102,27 @@ public class RecipeDAO {
     {
     	return mapper.recipeCookieInfoData(no);
     }
+    
+    /*
+     *   @Select("SELECT no,title,poster,chef,num "
+			  +"FROM (SELECT no,title,poster,chef,rownum as num "
+			  +"FROM (SELECT no,title,poster,chef "
+			  +"FROM recipe WHERE title LIKE '%'||#{fd}||'%' "
+			  +"AND no IN(SELECT no FROM recipe INTERSECT SELECT no FROM recipedetail) "
+			  +"ORDER BY no ASC)) "
+			  +"WHERE num BETWEEN #{start} AND #{end}")
+	   public List<RecipeVO> recipeFindData(Map map);
+	   @Select("SELECT CEIL(COUNT(*)/20.0) FROM recipe "
+			  +"WHERE title LIKE '%'||#{fd}||'%' "
+			  +"AND no IN(SELECT no FROM recipe INTERSECT SELECT no FROM recipedetail)")
+	   public int recipeFindTotalPage(Map map);
+     */
+    public List<RecipeVO> recipeFindData(Map map)
+    {
+    	return mapper.recipeFindData(map);
+    }
+    public int recipeFindTotalPage(Map map)
+    {
+    	return mapper.recipeFindTotalPage(map);
+    }
 }

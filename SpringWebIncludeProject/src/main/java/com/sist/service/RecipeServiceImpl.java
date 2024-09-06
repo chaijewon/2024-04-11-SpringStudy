@@ -9,6 +9,15 @@ import com.sist.vo.*;
  *    JSP = Controller = Service = Repository = 오라클 
  *                     =         =            =
  */
+/*
+ *   1. mapper => SQL문장 작성 
+ *   2. dao에서 구현 
+ *   3. service에 등록  ~Service
+ *   4. service구현    ~ServiceImpl
+ *   => 유지보수 목적 => DAO를 추가하면 오류 => 오류 방지
+ *   => 결합성이 낮은 프로그램 
+ *      ========== 다른 클래스에 영향이 없이 사용
+ */
 @Service
 public class RecipeServiceImpl implements RecipeService{
     @Autowired
@@ -60,5 +69,17 @@ public class RecipeServiceImpl implements RecipeService{
 	public RecipeVO recipeCookieInfoData(int no) {
 		// TODO Auto-generated method stub
 		return dao.recipeCookieInfoData(no);
+	}
+
+	@Override
+	public List<RecipeVO> recipeFindData(Map map) {
+		// TODO Auto-generated method stub
+		return dao.recipeFindData(map);
+	}
+
+	@Override
+	public int recipeFindTotalPage(Map map) {
+		// TODO Auto-generated method stub
+		return dao.recipeFindTotalPage(map);
 	}
 }

@@ -8,7 +8,8 @@
 </head>
 <body>
   <%-- AOP 공통 적용 기능 처리  --%>
-  <div class="row">
+  <div class="container">
+  <hr>
 	  <div class="col-sm-4">
 	   <h3>인기 레시피 Top5</h3>
 	  </div>
