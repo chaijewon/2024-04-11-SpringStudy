@@ -60,4 +60,31 @@ public class BoardDAO {
 	   mapper.hitIncrement(no);
 	   return mapper.boardDetailData(no);
    }
+   
+   public ReplyBoardVO boardUpdateData(int no)
+   {
+	   return mapper.boardDetailData(no);
+   }
+   /*
+    *   // 수정 
+		  @Select("SELECT pwd FROM spring_replyboard "
+				 +"WHERE no=#{no}")
+		  public String boardGetPassword(int no);
+		  
+		  @Update("UPDATE spring_replyboard SET "
+				 +"name=#{name},subject=#{subject},content=#{content} "
+				 +"WHERE no=#{no}")
+		  public void boardUpdate(ReplyBoardVO vo);
+    */
+   public String boardUpdate(ReplyBoardVO vo)
+   {
+	   String result="no";
+	   String db_pwd=mapper.boardGetPassword(vo.getNo());
+	   if(db_pwd.equals(vo.getPwd()))
+	   {
+		   result="yes";
+		   mapper.boardUpdate(vo);
+	   }
+	   return result;
+   }
 }

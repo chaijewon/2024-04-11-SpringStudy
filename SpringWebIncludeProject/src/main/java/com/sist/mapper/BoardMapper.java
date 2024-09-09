@@ -36,6 +36,14 @@ public interface BoardMapper {
 		 +"WHERE no=#{no}")
   public ReplyBoardVO boardDetailData(int no);
   // 수정 
+  @Select("SELECT pwd FROM spring_replyboard "
+		 +"WHERE no=#{no}")
+  public String boardGetPassword(int no);
+  
+  @Update("UPDATE spring_replyboard SET "
+		 +"name=#{name},subject=#{subject},content=#{content} "
+		 +"WHERE no=#{no}")
+  public void boardUpdate(ReplyBoardVO vo);
   // 삭제 
   // 답변하기 
   // 검색 = 동적쿼리 
