@@ -46,6 +46,7 @@ public class BoardController {
 	   model.addAttribute("curpage", curpage);
 	   model.addAttribute("totalpage", totalpage);
 	   model.addAttribute("count", count);
+	   model.addAttribute("type", "관리자가 삭제한 게시물입니다");
 	   model.addAttribute("today", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 	   model.addAttribute("main_jsp", "../board/list.jsp");
 	   return "main/main";
@@ -139,6 +140,21 @@ public class BoardController {
    {
 	   model.addAttribute("no", no);
 	   model.addAttribute("main_jsp", "../board/reply.jsp");
+	   return "main/main";
+   }
+   @PostMapping("board/reply_ok.do")
+   public String board_reply_ok(int pno,ReplyBoardVO vo)
+   {
+	   // 처리 
+	   bService.boardReplyInsert(pno, vo);
+	   return "redirect:../board/list.do";
+   }
+   // board/delete.do?no=${vo.no }
+   @GetMapping("board/delete.do")
+   public String board_delete(int no,Model model)
+   {
+	   model.addAttribute("no", no);
+	   model.addAttribute("main_jsp", "../board/delete.jsp");
 	   return "main/main";
    }
 }
