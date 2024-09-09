@@ -29,6 +29,7 @@
            <input type="hidden" name="pno" value="${no }">
            <%-- 답변 대상 번호
                 답변은 insert 
+                
             --%>
          </td>
         </tr>
