@@ -14,6 +14,34 @@ import com.sist.service.*;
 import com.sist.vo.*;
 // 조립기 => Service+VO+DAO => 결과값 추출 => JSP로 전송 
 @Controller  // DispatcherServlet과 연결 
+/*
+ *    1. 요청 받기 => DispatcherServlet 
+ *    2. Model을 조회 => HandlerMapping
+ *    2-1. Model 메소드 호출 => HandlerMapping 
+ *    3. JSP를 찾는다 => ViewResolver
+ *    3-1 JSP로 request를 전송 => ViewResolver 
+ *    4. JSP에 request를 받아서 화면에 출력 
+ *    5. 브라우저에서 읽기
+ *    
+ *    Model ======> Service =======> DAO ======> 오라클 
+ *          <=======       <=======   |   <======
+ *                                  유지보수
+ *          결합성이 낮은 프로그램 : 스프링의 기조
+ *          =================== 수정시에 다른 클래스에 영향이 없게 만든다 
+ *                              =================================
+ *                               | *** POJO => 독립적인 클래스
+ *                                      70%  
+ *     
+ *    => 스프링 : Model , JSP , DAO , VO , Service 
+ *                |       |   ==== Mapper(SQL)
+ *                       화면을 유지 => 자바스크립트 (Ajax => Vue => React)
+ *                       다른 화면으로 변경 => <a> , <form> 
+ *              화면 제어 : @Controller
+ *              데이터 제어 : @RestController
+ *              = @GetMapping / @PostMapping 
+ *              = 리턴형 : void / String 
+ *              = 매개변수 : getParameter를 대체 
+ */
 public class BoardController {
    // 객체를 이용해서 @Autowired를 사용하면 주소값을 받으면 => 속도가 늦다 
    // 가급적이면 생성자를 이용한다 

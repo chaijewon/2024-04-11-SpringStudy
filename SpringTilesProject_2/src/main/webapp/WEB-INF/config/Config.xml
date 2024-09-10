@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <!-- VO등록 -->
+  <typeAliases>
+    <typeAlias type="com.sist.vo.RecipeVO" alias="RecipeVO"/>
+    <typeAlias type="com.sist.vo.ChefVO" alias="ChefVO"/>
+    <typeAlias type="com.sist.vo.RecipeDetailVO" alias="RecipeDetailVO"/>
+  </typeAliases>
+  <mappers>
+    <mapper resource="com/sist/mapper/recipe-mapper.xml"/>
+  </mappers>
+</configuration>
