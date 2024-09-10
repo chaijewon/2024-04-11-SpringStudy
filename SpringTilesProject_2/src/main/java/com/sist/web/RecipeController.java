@@ -144,4 +144,45 @@ public class RecipeController {
 	   return "recipe/chef_list";
    }
    
+   // recipe/chef_make.do?chef=${vo.chef }
+   @GetMapping("recipe/chef_make.do")
+   public String recipe_chef_make(String page,String chef,Model model)
+   {
+	   // DB연동 
+	   if(page==null)
+		   page="1";
+	   int curpage=Integer.parseInt(page);
+	   int rowSize=20;
+	   int start=(rowSize*curpage)-(rowSize-1);
+	   int end=rowSize*curpage;
+	   
+	   Map map=new HashMap();
+	   map.put("start", start);
+	   map.put("end", end);
+	   map.put("chef", chef);
+	   // DB연동 
+	   List<RecipeVO> list=rDao.chefMakeData(map);
+	   int totalpage=rDao.chefMakeTotalPage(map);
+	   
+	   final int BLOCK=10;
+	   int startPage=((curpage-1)/BLOCK*BLOCK)+1;
+	   /*
+	    *    curpage : 현재 페이지 
+	    *    =================== 1~10 => startPage=1 , endPage=10
+	    *                       11~20 => startPage=11, endPage=20
+	    *                        
+	    */
+	   int endPage=((curpage-1)/BLOCK*BLOCK)+BLOCK;
+	   if(endPage>totalpage)
+		   endPage=totalpage;
+	   
+	   model.addAttribute("list", list);
+	   model.addAttribute("curpage", curpage);
+	   model.addAttribute("totalpage", totalpage);
+	   model.addAttribute("startPage", startPage);
+	   model.addAttribute("endPage", endPage);
+	   model.addAttribute("chef", chef);
+	   return "recipe/chef_make";
+   }
+   
 }
