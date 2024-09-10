@@ -12,4 +12,22 @@
      ORDER BY no ASC))
      WHERE num BETWEEN #{start} AND #{end}
    </select>
+   <select id="recipeFindData" resultType="RecipeVO" parameterType="hashmap">
+     SELECT no,title,poster,chef,num
+     FROM (SELECT no,title,poster,chef,rownum as num 
+     FROM (SELECT no,title,poster,chef 
+     FROM recipe
+     WHERE no IN(SELECT no FROM recipe INTERSECT (SELECT no FROM recipeDetail))
+     AND title LIKE '%'||#{fd}||'%' 
+     ORDER BY no ASC))
+     WHERE num BETWEEN #{start} AND #{end}
+   </select>
+   
+   <select id="chefListData" resultType="ChefVO" parameterType="hashmap">
+     SELECT poster,chef,mem_cont1,mem_cont2,mem_cont3,mem_cont7,num
+     FROM (SELECT poster,chef,mem_cont1,mem_cont2,mem_cont3,mem_cont7,rownum as num 
+     FROM (SELECT poster,chef,mem_cont1,mem_cont2,mem_cont3,mem_cont7 
+     FROM chef))
+     WHERE num BETWEEN #{start} AND #{end}
+   </select>
 </mapper>

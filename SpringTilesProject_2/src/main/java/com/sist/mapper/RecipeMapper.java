@@ -19,6 +19,31 @@ public interface RecipeMapper {
    */
 	public List<RecipeVO> recipeListData(Map map);
 	
+	/*
+	 *   <select id="recipeFindData" resultType="RecipeVO" parameterType="hashmap">
+	 */
+	public List<RecipeVO> recipeFindData(Map map);
+	
+	/* 
+	 *  <select id="chefListData" resultType="ChefVO" parameterType="hashmap">
+	 */
+	public List<ChefVO> chefListData(Map map);
+	
+	@Select("SELECT CEIL(COUNT(*)/20.0) FROM chef")
+	public int chefTotalPage();
+	/*
+	 *   XML혼합 
+	 *   => id명 => 메소드명 
+	 *    resultType => 리턴형 
+	 *    parameterType => 매개변수 
+	 *    
+	 *   => SQL문장이 복잡한 경우 
+	 *      1. 페이지 나누기 
+	 *      2. 조인 
+	 *      3. 서브쿼리 
+	 *      4. 컬럼명이 많은 경우 => NVL
+	 */
+	
 	@Update("UPDATE recipe SET "
 		   +"hit=hit+1 "
 		   +"WHERE no=#{no}")
@@ -27,6 +52,12 @@ public interface RecipeMapper {
 	@Select("SELECT * FROM recipeDetail WHERE no=#{no}")
 	public RecipeDetailVO recipeDetailData(int no);
 	
-	@Select("SELECT CEIL(COUNT(*)/20.0) FROM recipe")
+	@Select("SELECT CEIL(COUNT(*)/20.0) FROM recipe "
+		   +"WHERE no IN(SELECT no FROM recipe INTERSECT (SELECT no FROM recipeDetail))")
 	public int recipeTotalPage();
+	
+	@Select("SELECT CEIL(COUNT(*)/20.0) FROM recipe "
+		   +"WHERE no IN(SELECT no FROM recipe INTERSECT (SELECT no FROM recipeDetail)) "
+		   +"AND title LIKE '%'||#{fd}||'%'")
+    public int recipeFindTotalPage(Map map);
 }

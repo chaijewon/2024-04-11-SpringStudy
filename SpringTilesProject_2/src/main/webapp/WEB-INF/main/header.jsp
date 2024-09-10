@@ -14,8 +14,8 @@
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="../main/main.do">Home</a></li>
-      <li><a href="#">레시피 검색</a></li>
-      <li><a href="#">쉐프</a></li>
+      <li><a href="../recipe/find.do">레시피 검색</a></li>
+      <li><a href="../recipe/chef_list.do">쉐프</a></li>
     </ul>
   </div>
 </nav>

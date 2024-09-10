@@ -4,9 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sist.dao.RecipeDAO;
+import com.sist.vo.ChefVO;
 import com.sist.vo.RecipeDetailVO;
+import com.sist.vo.RecipeVO;
+
 import java.util.*;
 @Controller
 public class RecipeController {
@@ -61,4 +65,83 @@ public class RecipeController {
 	   model.addAttribute("iList", iList);
 	   return "recipe/detail";
    }
+   // 실제 검색 : POST , 페이지 => GET ==> POST와 GET을 동시에 사용 
+   @RequestMapping("recipe/find.do")
+   public String recipe_find(String fd,String page,Model model)
+   {
+	   if(fd==null)
+		   fd="비빔밥";
+	   if(page==null)
+		   page="1";
+	   int curpage=Integer.parseInt(page);
+	   int rowSize=20;
+	   int start=(rowSize*curpage)-(rowSize-1);
+	   int end=rowSize*curpage;
+	   
+	   Map map=new HashMap();
+	   map.put("start", start);
+	   map.put("end", end);
+	   map.put("fd", fd);
+	   // DB연동 
+	   List<RecipeVO> list=rDao.recipeFindData(map);
+	   int totalpage=rDao.recipeFindTotalPage(map);
+	   
+	   final int BLOCK=10;
+	   int startPage=((curpage-1)/BLOCK*BLOCK)+1;
+	   /*
+	    *    curpage : 현재 페이지 
+	    *    =================== 1~10 => startPage=1 , endPage=10
+	    *                       11~20 => startPage=11, endPage=20
+	    *                        
+	    */
+	   int endPage=((curpage-1)/BLOCK*BLOCK)+BLOCK;
+	   if(endPage>totalpage)
+		   endPage=totalpage;
+	   
+	   model.addAttribute("list", list);
+	   model.addAttribute("curpage", curpage);
+	   model.addAttribute("totalpage", totalpage);
+	   model.addAttribute("startPage", startPage);
+	   model.addAttribute("endPage", endPage);
+	   model.addAttribute("fd", fd);
+	   // ../main/main.jsp => (X)
+	   return "recipe/find"; // model.addAttribute("main_jsp",...)
+   }
+   @GetMapping("recipe/chef_list.do")
+   public String recipe_chef_list(String page,Model model)
+   {
+	   if(page==null)
+		   page="1";
+	   int curpage=Integer.parseInt(page);
+	   int rowSize=20;
+	   int start=(rowSize*curpage)-(rowSize-1);
+	   int end=rowSize*curpage;
+	   
+	   Map map=new HashMap();
+	   map.put("start", start);
+	   map.put("end", end);
+	   // DB연동 
+	   List<ChefVO> list=rDao.chefListData(map);
+	   int totalpage=rDao.chefTotalPage();
+	   
+	   final int BLOCK=10;
+	   int startPage=((curpage-1)/BLOCK*BLOCK)+1;
+	   /*
+	    *    curpage : 현재 페이지 
+	    *    =================== 1~10 => startPage=1 , endPage=10
+	    *                       11~20 => startPage=11, endPage=20
+	    *                        
+	    */
+	   int endPage=((curpage-1)/BLOCK*BLOCK)+BLOCK;
+	   if(endPage>totalpage)
+		   endPage=totalpage;
+	   
+	   model.addAttribute("list", list);
+	   model.addAttribute("curpage", curpage);
+	   model.addAttribute("totalpage", totalpage);
+	   model.addAttribute("startPage", startPage);
+	   model.addAttribute("endPage", endPage);
+	   return "recipe/chef_list";
+   }
+   
 }
