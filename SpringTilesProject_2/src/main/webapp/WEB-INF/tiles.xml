@@ -14,6 +14,14 @@
                
                recipe/chef/list => */*/*
   -->
+ <definition name="mypage" template="/WEB-INF/mypage/mypage_main.jsp">
+   <put-attribute name="header" value="/WEB-INF/main/header.jsp"/>
+   <put-attribute name="menu" value="/WEB-INF/mypage/mypage_menu.jsp"/>
+   <put-attribute name="content" value="/WEB-INF/mypage/mypage_content.jsp"/>
+ </definition>
+ <definition name="mypage/*" extends="mypage">
+   <put-attribute name="content" value="/WEB-INF/mypage/{1}.jsp"/>
+ </definition>
   <!--  emp/list -->
  <definition name="*/*" extends="main">
    <put-attribute name="home" value="/WEB-INF/{1}/{2}.jsp"/>

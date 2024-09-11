@@ -18,6 +18,7 @@
       <li><a href="../recipe/chef_list.do">쉐프</a></li>
       <li><a href="../emp/list.do">사원(조인)</a></li>
       <li><a href="../board/list.do">Front연습(게시판)</a></li>
+      <li><a href="../mypage/mypage_main.do">마이페이지</a></li>
     </ul>
   </div>
 </nav>
