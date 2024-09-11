@@ -1,6 +1,8 @@
 package com.sist.mapper;
 import java.util.*;
 
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -69,4 +71,6 @@ public interface RecipeMapper {
 		   +"WHERE no IN(SELECT no FROM recipe INTERSECT (SELECT no FROM recipeDetail)) "
 		   +"AND title LIKE '%'||#{fd}||'%'")
     public int recipeFindTotalPage(Map map);
+	
+	
 }
