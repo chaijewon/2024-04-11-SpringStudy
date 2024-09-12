@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.EmpMapper">
+  <!-- 
+      @Select({"<script>"
+	      +"SELECT empno,ename,job,TO_CHAR(hiredate,'YYYY-MM-DD DY')as dbday,"
+	      +"sal,deptno FROM emp "
+	      +"<trim prefix=\"WHERE ename IN(\" suffix=\")\" suffixOverrides=\")\" "
+	      +"prefixOverrides=\"(\">"
+	      +"<foreach collection=\"names\" item=\"name\" open=\"(\" close=\")\" separator=\",\">"
+	      +"#{name}"
+	      +"</foreach>"
+	      +"</trim>"
+	      +"</script>"})
+	      public List<EmpVO> empNameFindData(Map map);
+	      
+	      for(String name:Map)
+   -->
+   <select id="empNameFindData" resultType="EmpVO" parameterType="hashmap">
+     SELECT empno,ename,job,TO_CHAR(hiredate,'YYYY-MM-DD DY')as dbday,
+            sal,deptno FROM emp
+            WHERE ename IN
+            <foreach collection="names" item="name" open="(" close=")" 
+              separator=",">
+              #{name}
+            </foreach>
+   </select>
+</mapper>

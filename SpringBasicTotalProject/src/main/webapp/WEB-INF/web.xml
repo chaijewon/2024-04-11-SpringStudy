@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <!-- 
+        Tomcat에 의해서 실행 
+        1) Controller 등록 : Servlet 
+                           ========
+                           | URL주소에 의해 톰캣이 호출 
+                                        =====
+                                        | web.xml / server.xml
+        프로그램 제어는 스프링에 의해 작동 
+                    =====
+                    1. 클래스 관리 => 객체생성 ~ 객체 소멸 
+                                   클래스 관리자 (객체 생명주기 관리자)
+                       1) 객체 생성 
+                          => 클래스명 / 찾기 위한 구분자 
+                          <bean id="" class="">
+                                ===== ========
+                                      | Class.forName() => 리플랙션 
+                                |구분자(ID는 중복할 수 없다) 
+                          => 생성과 동시에 멤버변수에 대한 초기화가 가능 
+                             =================================
+                             | DI (의존성 주입) => 스프링에 의해서 값이 설정 
+                               => 객체의 멤버변수는 private(캡슐화) => 접근이 불가능 
+                                  => setXxx() , 생성자 
+                                     | setter DI , constructor DI
+                                     <bean id="" class="A"
+                                       p:name="홍길동" => setName("")
+                                     />
+                                     class A
+                                     {
+                                        private String name;
+                                        public void setName(String name)
+                                        {
+                                           this.name=name;
+                                        }
+                                     }
+                                     
+                                     <bean id="" class="A"
+                                       c:name="심청이" => A("심청이")
+                                     >
+                                     
+                                     class A
+                                     {
+                                        private String name;
+                                        public A(String name)
+                                        {
+                                           this.name=name
+                                        }
+                                     }
+                        DI : 초기화 
+                         => Injection (값을 주입) => 스프링을 통해서 변수값을 지정
+                         => 객체 생성시  => 메소드 호출이 가능 => init-method
+                                         => 드라이버 등록
+                                         => 서버 연결 
+                            객체 소멸시  => 메소드 호출이 가능 => destory-method
+                                         => 데이터베이스 연결 해제 
+                                         => 서버 해제  
+                  DI => 1. setter DI 
+                        2. constructort DI
+                        3. method DI
+                        
+                  스프링의 기본 기능 DI (80% => 스프링)
+                  ====
+                  | 클래스 관리자 => 개발자가 필요시에는 생성된 객체를 사용할때가 있다 
+                   =========== 1. 관계도가 단순한다  
+                     1) 객체 찾기 => 사용 =======> DL (Lookup) => getBean()
+                                                @Autowired
+                     2) 객체 멤버변수 초기화 ======> DI (Injection)
+             => 클래스등록 => <bean~~>
+                ======= 패키지단위로 등록 (제외:라이브러리:<bean>)
+                        ======= 관리를 요청하는 클래스와 관리가 필요없는 클래스
+                                =================
+                                구분해서 저장 => 어노테이션 
+                기능 수행 : 한개만 메모리 할당 : 싱글턴 
+                          VO는 필요시마다 개발자가 직접 메모리 할당후 사용 (스프링 관리에서 제외)
+                기능별로 저장 (스프링) 
+                @Component : 일반클래스 ~Manager (Open API)
+                @Repository : DAO 
+                @Service : BI (DAO를 통합)
+                @Controller : JSP를 제어하는 모델 
+                @RestController : 자바스크립트 (JSON)
+                @ControllerAdvice : Controller전체에 대한 예외처리
+                ====================== 어노테이션이 올라간 클래스만 메모리 할당 (스프링 관리)
+                
+                AOP : 공통 모듈 (반복이 많은 경우) => 반복을 제거 
+                      OOP에서는 자동호출이 불가능 => AOP에서 보완 
+                      => 보안 / 트랜잭션 / 로그파일 
+                      => 반복적으로 출력 (사용자 정의) 
+                      
+                      PointCut : 어떤 메소드에 적용 => 메소드 지정 
+                      JoinPoint : 메소드 호출할 위치를 지정 
+                        public void display()
+                        {
+                           =====> Before => getConnection()
+                           try
+                           {
+                               =============== Around  setAutoCommit(false)
+                                 핵심 코딩 
+                               =============== Around   commit()
+                           }catch(Exception ex)
+                           {
+                               After-Throwing : rollback()
+                           }
+                           finally
+                           {
+                               After : setAutoCommit(true)
+                                       disConnection()
+                           }
+                           
+                           return = After-Returning
+                        }
+                      ========= +
+                        Advice 
+                        
+                     Spring => DI/AOP
+                               MVC 
+                               Security 
+                               
+                               => DI : 개념 => 클래스와 클래스 연관 관계설정 
+                                  = DAO VS Service
+                               => AOP : 공통기반의 메소드를 만들어서 반복을 제거 
+                                  = 트랜잭션 / 보안 
+                               => 면접 : 정의 => 부여 
+                MVC : DI/AOP를 포함 
+                
+                MVC => Controller : 요청받아서 => 결과값을 JSP로 전송 
+                       View : 화면에 출력 => Controller에서 전송된 결과값 
+                       Model : 요청 처리 
+                       1) 유지 보수가 편리   
+                       2) 여러명이 동시에 개발이 가능 => 개발속도가 빠르다 
+                          => View / Model 
+                             |Front |Back
+                       3) 재사용 / 확장이 가능 
+                동작 
+                 사용자 요청 (브라우저의 주소창)
+                           ============== 서버와 연결 
+                           => 파일명 => 파일을 찾아서 HTML을 브라우저 전송 
+                     |
+                  Controller 요청을 받는다,Model을 찾는다  
+                     |                  ============
+                                         HandlerMapping
+                   Model => 메소드 호출 => 요청 처리가 가능  ==> DAO/Service 결과값을 얻어 온다 
+                            ========= 구분 : @GetMapping / @PostMapping / @RequestMapping
+                            => 메소드명없이 호출이 가능 => invoke()
+                     | ===> request를 전송 : ViewResolver
+                   JSP(View)
+                   
+              => Model에 있는 메소드 방식 
+                 리턴형 
+                    String / void
+                             | 화면 변경이 없는 경우 => 다운로드/AJAX
+                    | 화면을 변경 
+                      = 이미 만들어진 화면으로 이동 => 데이터를 전송할 필요가 없는 경우 
+                        => request초기화 
+                        => _ok.do 
+                        => sendRedirect 
+                        => return "redirect:list.do"
+                        => 값을 전송시에 => RedirectAttributes
+                      = 화면 이동 => request에 값을 담아서 전송 
+                        =>  일반 화면 
+                        => forward 
+                        => return "폴더명/JSP파일명";
+                        => 값을 전송시에는 => Model
+                 메소드명 : 개발자가 마음 (문법에 충실)
+                 매개변수 : => 400
+                          사용자 전송 
+                          = 목록 : (String page) 
+                          = 상세보기 : (int no)
+                          = 회원가입 : (MemberVO vo) => 커맨드 객체 
+                          = 로그인 : (String id,String pwd)
+                          = 검색 :(String fd,String page)
+                          = 파일 여러개 업로드 : (List<MultipartFile> files)
+                          = 체크박스 여러개 : (String[])
+                          ==============================================
+                          처리 / 전송 
+                          =========
+                          => 라이브러리 추가 
+                          => Cookie 
+                             => HttpServletRequest : 쿠키 읽기 
+                                Cookie[] cookies=request.getCookies()
+                             => HttpServletResponse : 쿠키 브라우저 전송 
+                                response.addCookie()
+                                => 다운로드 
+                          => 결과값을 전송 
+                             => forward : Model 
+                                model.addAttribute(String key,Object obj)
+                             => sendRedirect : RedirectAttributes
+                                ra.addAttribute(String key,Object obj)
+                                
+                           => HttpSession : 사용자의 일부정보를 저장 
+                                  => 어떤 JSP든 상관없이 사용이 가능
+                           => 보안  
+                 구분자 : => 405
+                   사용자 요청 
+                     => <a> : GET
+                        <a href="a.do"></a>
+                        @GetMapping("a.do")
+                     => <form> : GET/POST
+                        <form method="get"> 
+                        @GetMapping()
+                        <form method="post">
+                        @PostMapping()
+                     => ajax : GET/POST
+                        $.ajax({
+                           type:'get' @GetMapping()
+                           type:'post' @PostMapping()
+                        })
+                     => axios : GET/POST
+                        axios.get()  @GetMapping() => SELECT
+                        axios.post() @PostMapping() => Insert
+                        axios.put()  @PutMapping() => Update
+                        axios.delete() @DeleteMapping() => Delete
+                     => 나머지는 GET
+              => 메소드의 매개변수 => 사용자 보내준 요청 데이터를 받는 곳 
+                 ============ getParameter를 사용하지 않는다 
+                              ============ 스프링에서 처리해 줌 
+                        
+              404  : 파일이 없는 경우
+              500  : DAO,NULL
+              400  : 매개변수에서 받는 값의 데이터형이 다른 경우 
+              405  : GET/POST구분이 안됨 
+              403  : 접근 거부 
+              412  : 한글 변환 문제 
+              200  : 정상 수행 => 정상 화면 
+              
+              메소드 리턴형 / 매개변수 
+                   ============== 메소드명을 자유롭게 설정                   
+     -->
+    <!-- 톰캣에 의해 실행 : Servlet -->
+    <!-- Servlet등록 : Controller 
+        .do => DispatcherServlet호출 
+               => public void service() => Thread => 각 클라이언트마다 따로 처리
+    -->
+	<servlet>
+      <servlet-name>dispatcher</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <init-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/config/application-*.xml</param-value>
+      </init-param>
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>dispatcher</servlet-name>
+      <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+    <!-- 한글 변환 : request를 사용하지 않는다 = 자동으로 한글 변환 처리  -->
+    <filter>
+      <filter-name>encodingFilter</filter-name>
+      <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+      <init-param>
+        <param-name>encoding</param-name>
+        <param-value>UTF-8</param-value>
+      </init-param>
+      <init-param>
+        <param-name>forceEncoding</param-name>
+        <param-value>true</param-value>
+      </init-param>
+    </filter>
+    <filter-mapping>
+      <filter-name>encodingFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+    </filter-mapping>
+</web-app>
