@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * Handles requests for the application home page.
  */
-// 화면 변경
+// 화면 변경  다시 변경 
 @Controller
 public class HomeController {
 	
