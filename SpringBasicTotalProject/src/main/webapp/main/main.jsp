@@ -20,6 +20,9 @@
 <body>
   <div class="container">
    <div class="row">
+    <h3>${time }</h3>
+   </div>
+   <div class="row">
      <a href="name_find.do" class="btn btn-sm btn-danger">이름 검색</a>
      <a href="find.do" class="btn btn-sm btn-danger">조건 검색</a>
    </div>

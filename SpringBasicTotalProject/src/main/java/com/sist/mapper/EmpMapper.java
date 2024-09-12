@@ -48,7 +48,7 @@ public interface EmpMapper {
 		  +"sal,deptno "
 		  +"FROM emp "
 		  +"<if test=\"fd!='all'\">"
-		  +"WHERE ${fd} LIKE '%'||#{ss}||'%'"
+		  +"WHERE ${fd} LIKE '%'||UPPER(#{ss})||'%'"
 		  +"</if>"
 		  +"</script>"})
    // fd = ename , ss= king

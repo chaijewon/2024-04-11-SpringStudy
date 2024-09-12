@@ -15,6 +15,7 @@ public class MainController {
     @Autowired
     private EmpDAO eDao;
     
+    
     @GetMapping("main/main.do")
     public String main_main(Model model)
     {
@@ -53,7 +54,8 @@ public class MainController {
     	// 데이터베이스 연동 
     	Map map=new HashMap();
     	map.put("fd", fd);
-    	map.put("ss", ss.toUpperCase());
+    	map.put("ss", ss);
+    
     	List<EmpVO> list=eDao.empFindData(map);
     	// 데이터 전송 
     	model.addAttribute("list", list);

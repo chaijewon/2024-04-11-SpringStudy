@@ -4,6 +4,7 @@ import java.util.*;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 import com.sist.mapper.*;
@@ -27,14 +28,17 @@ public class EmpDAO {
 		   @Select("SELECT DISTINCT ename FROM emp")
 		   public List<String> empEnameList();
     */
+   @Async
    public List<EmpVO> empListData()
    {
 	   return mapper.empListData();
    }
+   @Async
    public EmpVO empDetailData()
    {
 	   return mapper.empDetailData();
    }
+   @Async
    public List<String> empEnameList()
    {
 	   return mapper.empEnameList();
