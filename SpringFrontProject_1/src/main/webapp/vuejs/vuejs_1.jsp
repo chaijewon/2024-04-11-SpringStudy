@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <%--
       VueJS 
        = 웹 화면을 출력하기 위한 자바스크립트 라이브러리 = 프레임워크 
